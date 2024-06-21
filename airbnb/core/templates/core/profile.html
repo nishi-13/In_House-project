@@ -1,0 +1,74 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+  <div class="mt-6 px-6 py-12 bg-slate-500  rounded-xl">
+      <div class="grid grid-cols-3 gap-3">
+          <div class="bg-white p-3 rounded-2xl w-full mt-9" style="height: 20rem;"> 
+            {% if profile.image %}
+                <img src="{{ profile.image.url }}" class="rounded-xl w-96 h-72">
+            {% else %}  
+            <img src="/media/profile_default.png" class="rounded-xl w-96 h-72"> 
+            {% endif %}    
+            
+          </div>
+          <div class="p-6 text-white col-span-2">
+              <h1 class="h1 mx-1 text-white text-4xl">{{user.username|title}}</h1>
+              <div class="mx-1 h3">{{user.email}}</div>
+              <form class="mx-1 mt-4 text-gray-500 " method="post" enctype="multipart/form-data" action="/profile">
+                {% csrf_token %}
+                <div class="bg-gray-100 py-8 px-16 rounded-2xl">
+                  <div class="">
+                    <div class=" grid grid-cols-3 flex-fill">
+                      <label class="font-semibold text-gray-500 p-2 rounded-2xl" for="bio">Bio</label>
+                      <textarea name="bio" id="bio" class="rounded-xl p-4 my-2 border-2 col-span-2 h-32" style="resize: none;">{{profile.description}}</textarea>
+                    </div>
+                    <div class=" grid grid-cols-3 flex-fill">
+                      <label class="font-semibold text-gray-500 p-2 rounded-2xl" for="profile">Profile pic</label>
+                      <input type="file" id="grade_csv" name="name" />
+                      <button type='submit' class="mx-3 px-4 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700"> Update </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+          </div>
+        </div>
+        <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+          <h1 class="h1 px-6 text-slate-500 text-4xl">Bookings</h1>
+          {% for booking in bookings %}
+          <div class="mt-6 px-6 py-12 bg-slate-500 rounded-xl">
+              <div class="grid grid-cols-5">
+                <div class="bg-white p-3 m-3 rounded-2xl col-span-2">
+                    <img src="/media/hotels/{{booking.hotel.location.name|lower}}/house{{booking.hotel.index}}.png" class="rounded-xl w-full h-48">  
+                </div>
+                <div class="p-3 m-3 rounded-2xl col-span-3">
+                  <h1 class="h1 text-white text-4xl">{{booking.hotel.name}}</h1>
+                    <ul class="text-gray-300 m-3">
+                      <li>Guest - {{booking.guest}}</li>
+                      <li>Days - {{booking.days}}</li>
+                      <li>Price - ${{booking.hotel.price}}</li>
+                      <li>Total - {{booking.total}}</li>
+                    </ul>
+                    <a href='/cancel/{{booking.id}}' class="px-6 m-3 py-3 text-lg font-semibold bg-red-100 text-black rounded-xl hover:bg-red-300"> Cancel </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+  </div>
+
+  {% if reviews %}
+  <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+      <h1 class="h1 p-6 text-slate-500 text-4xl">Reviews</h1>
+      {% for review in reviews %}
+          <div class="p-6 m-3 rounded-2xl bg-slate-500">
+              <h1 class="h1 text-white text-4xl">{{review.user.username}}</h1>
+                <ul class="text-gray-300 m-3">
+                  <li>{{review.text}}</li>
+                </ul>
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock%}

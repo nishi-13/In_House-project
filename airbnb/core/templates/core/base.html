@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, inital-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>In-House</title>
+    </head>
+    <body style="overflow-x: hidden;">
+        <nav class="py-6 px-6 flex justify-between items-center bg-slate-700 sticky top-0" id="top_nav">    
+            <a href="/" class="text-white text-xl font-semibold"> Inhouse </a>
+            <div class="space-x-6">
+                <a href="/" class="text-teal-500 font-semibold text-lg hover:text-teal-700"> Home </a>
+                <a href="/about" class="text-teal-500 font-semibold text-lg hover:text-teal-700"> About us </a>
+                <a href="/team" class="text-teal-500 font-semibold text-lg hover:text-teal-700"> Our Team </a>
+                {% if request.user.is_authenticated %}
+                    <a href='/logout' class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700"> Logout </a>
+                    <a href='/profile' class="px-6 py-3 text-lg font-semibold bg-gray-100 text-black rounded-xl hover:bg-gray-300"> Profile </a>
+                {% else %}
+                    <a href='/login' class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700"> Login </a>
+                    <a href='/register' class="px-6 py-3 text-lg font-semibold bg-gray-100 text-black rounded-xl hover:bg-gray-300"> Register </a>
+                {% endif %}
+            </div>
+        </nav>
+
+        {% block nav %}
+        {% endblock %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }}" role="alert">
+            <li>{{ message }}</li>
+            <div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="px-6 py-6">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <footer class="py-6 px-6 flex justify-between bg-gray-800 my-6 w-full">
+            <div class="w-2/3 pr-10">
+                <h3 class="mb-5 font-semibold text-gray-400">About us</h3>
+                <p class="text-lg text-gray-500">This is a dummy about us. Please ignore</p>
+            </div>
+            <div class="w-1/3">
+                <h3 class="mb-5 font-semibold text-gray-400">Menu</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-lg text-teal-500 hover:text-teal-:700">Locations</a></li>
+                    <li><a href="#" class="text-lg text-teal-500 hover:text-teal-:700">Hotels</a></li>
+                </ul>
+            </div>
+        </footer>
+    </body>
+</html>
